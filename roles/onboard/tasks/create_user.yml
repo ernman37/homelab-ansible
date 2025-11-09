@@ -1,0 +1,42 @@
+---
+- name: Create Ansible Groups 
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+  loop: "{{ onboard_groups }}"
+
+
+- name: Create Ansible Users
+  ansible.builtin.user: 
+    name: "{{ item.name }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups }}"
+    uid: "{{ item.uid }}"
+    home: "{{ item.home }}"
+    shell: "{{ item.shell }}"
+  loop: "{{ onboard_users }}"
+
+- name: Ensure 'admins' has passwordless sudo
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/admins
+    create: true
+    mode: '0440'
+    line: '%admins ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Ensure .ssh directory exists for ansible user
+  ansible.builtin.file:
+    path: "/home/ansible/.ssh"
+    state: directory
+    owner: "ansible"
+    group: "ansible"
+    mode: '0700'
+  
+- name: Add public SSH key to authorized_keys file
+  ansible.posix.authorized_key:
+    user: "ansible" 
+    state: present
+    key: "{{ lookup('file', './files/id_rsa_ansible.pub') }}" 
+    manage_dir: yes 
+
+  

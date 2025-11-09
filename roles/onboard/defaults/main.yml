@@ -1,0 +1,28 @@
+---
+
+onboard_groups: 
+  - name: ansible
+    gid: 10001
+  - name: admins
+    gid: 10000
+  - name: ernman
+    gid: 10420
+
+onboard_users: 
+  - name: ansible
+    group: "ansible"
+    groups: "admins"
+    uid: 10001
+    home: "/home/ansible"
+    shell: "/bin/bash"
+  - name: ernman
+    group: "ernman"
+    groups: "admins"
+    uid: 10420
+    home: "/home/ernman"
+    shell: "/bin/bash"
+
+
+
+
+

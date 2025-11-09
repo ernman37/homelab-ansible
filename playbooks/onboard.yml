@@ -1,0 +1,7 @@
+---
+
+- name: Run Onboard Role
+  hosts: "{{ target }}"
+  become: true
+  roles:
+    - onboard
