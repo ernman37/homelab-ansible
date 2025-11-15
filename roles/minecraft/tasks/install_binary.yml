@@ -1,0 +1,19 @@
+---
+- name: Check if Zip is Downloaded
+  ansible.builtin.stat:
+    path: "{{ minecraft_download_dest }}"
+  register: minecraft_zip_stat
+
+- name: Download Bedrock Server Zip
+  ansible.builtin.get_url:
+    url: "{{ minecraft_link }}"
+    dest: "{{ minecraft_download_dest }}"
+    mode: '0644'
+  when: not minecraft_zip_stat.stat.exists
+
+- name: Unarchive the downloaded ZIP file
+  ansible.builtin.unarchive:
+    src: "{{ minecraft_download_dest }}"
+    dest: "{{ minecraft_install_dir }}"
+    remote_src: yes
+    creates: "{{ minecraft_install_dir }}"

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+SOURCE_DIR="{{ minecraft_world_dir }}"
+BACKUP_DIR="{{ minecraft_backup_dir }}"
+MAX_BACKUPS={{ minecraft_max_backups }}
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+BACKUP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.tar.gz"
+
+function main() {
+    create_backup
+    cleanup_old_backups
+}
+
+function create_backup(){
+    echoInfo "Creating backup: $BACKUP_FILE"
+    local output
+    if ! output="$(tar -cvzf "$BACKUP_FILE" -C "$SOURCE_DIR" .)";
+    then
+        echoErr "Backup failed!"
+        echoErr "output: $output"
+        exit 1
+    fi
+    echoInfo "Backup created successfully: $BACKUP_FILE"
+    echoInfo "Output: $output"
+}
+
+function cleanup_old_backups() {
+    local BACKUPS_TO_DELETE
+    BACKUPS_TO_DELETE=$(ls -1tr "$BACKUP_DIR"/backup_*.tar.gz 2>/dev/null | head -n -"$MAX_BACKUPS")
+
+    if [[ -z "$BACKUPS_TO_DELETE" ]];
+    then
+        echoInfo "No old backups to delete."
+        return
+    fi
+
+    while IFS= read -r backup;
+    do
+        echoInfo "Deleting old backup: $backup"
+        local output
+        if ! output="$(rm -f "$backup" 2>&1)";
+        then
+            echoErr "Failed to delete old backup: $backup"
+            echoErr "output: $output"
+        else
+            echoInfo "Deleted old backup: $backup"
+        fi
+    done <<< "$BACKUPS_TO_DELETE"
+
+    echoInfo "Backup and cleanup complete."
+}
+
+function echoInfo() {
+    echo -e "$(__timestamp)[INFO] $*"
+}
+
+function echoErr() {
+    echo -e "$(__timestamp)[ERROR] $*"
+}
+
+function __timestamp() {
+    local output
+    if output="[$(date +"%Y-%m-%d %H:%M:%S" 2>&1)]";
+    then
+       echo "$output"
+    fi
+}
+
+main 2>&1 | tee -a "{{ minecraft_backup_log }}"

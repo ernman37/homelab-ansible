@@ -1,0 +1,25 @@
+---
+- name: Create Backup Directory
+  ansible.builtin.file:
+    path: "{{ minecraft_backup_dir }}"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: "0755"
+
+- name: Create Backup Script
+  ansible.builtin.template:
+    src: backup.sh.j2
+    dest: "{{ minecraft_backup_script }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: "0755"
+
+- name: Create Backup Cron Job
+  ansible.builtin.cron:
+    name: "Minecraft Backup"
+    minute: "0"
+    hour: "*/6"
+    job: "/usr/bin/bash {{ minecraft_backup_script }}"
+    user: "{{ minecraft_user }}"
+    state: present

@@ -1,0 +1,16 @@
+---
+- name: Create Minecraft Directory
+  ansible.builtin.file:
+    path: "{{ minecraft_base_dir }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: "0755"
+    state: directory
+
+- name: Ensure Log File exists
+  ansible.builtin.file:
+    path: "{{ minecraft_log }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: "0644"
+    state: file

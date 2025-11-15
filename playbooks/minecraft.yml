@@ -1,0 +1,7 @@
+---
+
+- name: Run Minecraft Role
+  hosts: "{{ target }}"
+  become: true
+  roles:
+    - minecraft

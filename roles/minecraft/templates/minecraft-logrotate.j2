@@ -1,0 +1,10 @@
+{{ minecraft_log }} {
+    weekly
+    rotate 1
+    size 10M
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 {{ minecraft_user }} {{ minecraft_group }}
+}
