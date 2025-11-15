@@ -19,5 +19,7 @@
   ansible.builtin.cron:
     name: "Minecraft Backup"
     minute: "0"
-    hour: "6"
+    hour: "*/6"
     job: "/usr/bin/bash {{ minecraft_backup_script }}"
+    user: "{{ minecraft_user }}"
+    state: present
