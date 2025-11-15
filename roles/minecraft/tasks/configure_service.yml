@@ -1,0 +1,10 @@
+---
+- name: Create System Service File
+  ansible.builtin.template:
+    src: minecraft.service.j2
+    dest: "{{ minecraft_service_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - restart_minecraft

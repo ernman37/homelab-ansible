@@ -1,0 +1,18 @@
+[Unit]
+Description=Minecraft Bedrock Server
+After=network.target
+
+[Service]
+Type=simple
+User={{ minecraft_user }}
+Group={{ minecraft_group }}
+WorkingDirectory={{ minecraft_install_dir }}
+ExecStart=/bin/bash -c 'LD_LIBRARY_PATH=. ./bedrock_server | tee -a {{ minecraft_log }} 2>&1'
+Restart=on-failure
+ProtectSystem=full
+PrivateDevices=true
+NoNewPrivileges=true
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

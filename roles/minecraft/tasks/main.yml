@@ -1,0 +1,15 @@
+---
+- name: Setup Minecraft User and group
+  import_tasks: setup_user.yml
+- name: Setup Environment
+  import_tasks: setup_env.yml
+- name: Install Minecraft Server
+  import_tasks: install_binary.yml
+- name: Configure Minecraft Server
+  import_tasks: configure_binary.yml
+- name: Setup Minecraft Service
+  import_tasks: configure_service.yml
+- name: Setup Backup for Minecraft
+  import_tasks: configure_backup.yml
+- name: Setup Logrotate for Minecraft
+  import_tasks: configure_logrotate.yml

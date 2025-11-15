@@ -1,0 +1,22 @@
+[
+
+  {%for operator in minecraft_operators %}
+    {
+      "permission": "operator",
+      "xuid": "{{ operator }}"
+    }{% if not loop.last or (minecraft_members | length) > 0 or (minecraft_visitors | length) > 0 %},{% endif %}
+  {% endfor %}
+  {% for member in minecraft_members %}
+    {
+      "permission": "member",
+      "xuid": "{{ member }}"
+    }{% if not loop.last or (minecraft_visitors | length) > 0 %},{% endif %}
+  {% endfor %}
+  {% for visitor in minecraft_visitors %}
+    {
+      "permission": "visitor",
+      "xuid": "{{ visitor }}"
+    }{% if not loop.last %},{% endif %}
+  {% endfor %}
+
+]

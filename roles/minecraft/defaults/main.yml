@@ -1,0 +1,38 @@
+---
+minecraft_user: minecraft
+minecraft_group: minecraft
+minecraft_log: /var/log/minecraft.log
+minecraft_service_file: /etc/systemd/system/minecraft.service
+
+minecraft_version: 1.21.121.1
+minecraft_zip: "bedrock-server-{{ minecraft_version }}.zip"
+minecraft_link: "https://minecraft.net/en-us/download/server/bedrock/bedrock-server-{{ minecraft_version }}.zip"
+upgrade: false
+
+minecraft_base_dir: /opt/minecraft
+minecraft_download_dest: "{{ minecraft_base_dir }}/{{ minecraft_zip }}"
+minecraft_install_dir: "{{ minecraft_base_dir }}/minecraft-{{ minecraft_version }}"
+minecraft_server_properties_file: "{{ minecraft_install_dir }}/server.properties"
+minecraft_server_permissions_file: "{{ minecraft_install_dir }}/permissions.json"
+
+minecraft_server_name: "Ernmans Server"
+minecraft_gamemode: "survival"
+minecraft_difficulty: "normal"
+minecraft_max_players: 10
+minecraft_server_port: 19132
+minecraft_server_portv6: 19133
+minecraft_level_name: "Life of Ernman"
+minecraft_world_seed: "44647503765050661"
+
+minecraft_world_dir: "{{ minecraft_base_dir }}/worlds"
+minecraft_max_backups: 100
+minecraft_backup_dir: /opt/minecraft/backup
+minecraft_backup_script: /opt/minecraft/backup/backup.sh
+minecraft_backup_log: /var/log/minecraft-backup.log
+
+minecraft_operators:
+  - "2533275032530353"
+
+minecraft_members: []
+
+minecraft_visitors: []

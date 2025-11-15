@@ -1,0 +1,11 @@
+---
+- name: Create Minecraft group
+  ansible.builtin.group:
+    name: "{{ minecraft_group }}"
+
+- name: Create Minecraft User
+  ansible.builtin.user:
+    name: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    shell: "/bin/false"
+    create_home: false
