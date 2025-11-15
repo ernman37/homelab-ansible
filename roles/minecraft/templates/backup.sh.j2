@@ -12,12 +12,15 @@ function main() {
 
 function create_backup(){
     echoInfo "Creating backup: $BACKUP_FILE"
-    if ! tar -czf "$BACKUP_FILE" -C "$SOURCE_DIR" .;
+    local output
+    if ! output="$(tar -cvzf "$BACKUP_FILE" -C "$SOURCE_DIR" .)";
     then
         echoErr "Backup failed!"
+        echoErr "output: $output"
         exit 1
     fi
     echoInfo "Backup created successfully: $BACKUP_FILE"
+    echoInfo "Output: $output"
 }
 
 function cleanup_old_backups() {
@@ -47,11 +50,11 @@ function cleanup_old_backups() {
 }
 
 function echoInfo() {
-    echo "$(__timestamp)[INFO] $*"
+    echo -e "$(__timestamp)[INFO] $*"
 }
 
 function echoErr() {
-    echo "$(__timestamp)[ERROR] $*"
+    echo -e "$(__timestamp)[ERROR] $*"
 }
 
 function __timestamp() {

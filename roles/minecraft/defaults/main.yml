@@ -24,7 +24,7 @@ minecraft_server_portv6: 19133
 minecraft_level_name: "Life of Ernman"
 minecraft_world_seed: "44647503765050661"
 
-minecraft_world_dir: "{{ minecraft_base_dir }}/worlds"
+minecraft_world_dir: "{{ minecraft_install_dir }}/worlds"
 minecraft_max_backups: 100
 minecraft_backup_dir: /opt/minecraft/backup
 minecraft_backup_script: /opt/minecraft/backup/backup.sh
