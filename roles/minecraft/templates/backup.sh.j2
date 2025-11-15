@@ -8,12 +8,12 @@ BACKUP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.tar.gz"
 function main() {
     create_backup
     cleanup_old_backups
-
 }
 
 function create_backup(){
     echoInfo "Creating backup: $BACKUP_FILE"
     if ! tar -czf "$BACKUP_FILE" -C "$SOURCE_DIR" .;
+    then
         echoErr "Backup failed!"
         exit 1
     fi
