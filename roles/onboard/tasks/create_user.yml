@@ -1,13 +1,13 @@
 ---
-- name: Create Ansible Groups 
+- name: Create Ansible Groups
   ansible.builtin.group:
     name: "{{ item.name }}"
     gid: "{{ item.gid }}"
   loop: "{{ onboard_groups }}"
-
+  when: "{{ item.name != ansible_user }}"
 
 - name: Create Ansible Users
-  ansible.builtin.user: 
+  ansible.builtin.user:
     name: "{{ item.name }}"
     group: "{{ item.group }}"
     groups: "{{ item.groups }}"
@@ -15,6 +15,7 @@
     home: "{{ item.home }}"
     shell: "{{ item.shell }}"
   loop: "{{ onboard_users }}"
+  when: "{{ item.name != ansible_user }}"
 
 - name: Ensure 'admins' has passwordless sudo
   ansible.builtin.lineinfile:
@@ -31,12 +32,10 @@
     owner: "ansible"
     group: "ansible"
     mode: '0700'
-  
+
 - name: Add public SSH key to authorized_keys file
   ansible.posix.authorized_key:
-    user: "ansible" 
+    user: "ansible"
     state: present
-    key: "{{ lookup('file', './files/id_rsa_ansible.pub') }}" 
-    manage_dir: yes 
-
-  
+    key: "{{ lookup('file', './files/id_rsa_ansible.pub') }}"
+    manage_dir: yes

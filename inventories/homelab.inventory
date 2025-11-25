@@ -1,5 +1,10 @@
 [homelab:children]
 minecraft
+pis
 
 [minecraft]
 bedrock ansible_host=10.0.0.153
+
+[pis]
+emd-pi01 ansible_host=10.0.0.102
+pihole ansible_host=10.0.0.101
